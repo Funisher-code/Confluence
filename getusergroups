@@ -1,0 +1,9 @@
+## Stolen and enhanced by: Funsiher-code
+## Foundation Developed by: Davin Studer
+## Date created: 2020-05-22
+## @param User:title=User|type=string|required=true|desc=Enter a user name.
+<ul>
+#foreach($group in $userAccessor.getGroupNamesForUserName($paramUser))
+<li><a href="https://cyberwiki.kapo.zh.ch/admin/users/domembersofgroupsearch.action?membersOfGroupTerm=$group">$group</a></li>
+#end
+</ul>
