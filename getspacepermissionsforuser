@@ -1,0 +1,35 @@
+## Taken and adapted by: Funisher-code
+## Date created: 2020-05-22
+## Foundation Code From: Arantxa Lacasa Madero
+  
+## @param username:title=user name|type=string|desc=full user name e.g.mark@kapo.zh.ch|required=true
+## @param permissiontype:title=permission type|type=string|desc=e.g. VIEWSPACE, EDITSPACE, ...|required=true
+## @param excludepersonalspaces:title=exclude personal spaces|type=boolean|desc=excludes personal spaces and only queries global spaces|default=true
+  
+#set($allSpaces = $spaceManager.getAllSpaces())
+#set($tmp = "")
+#foreach($space in $allSpaces)  
+	#foreach ($permission in $space.getPermissions())
+		#if ($paramexcludepersonalspaces==true)
+			#if ($space.isGlobal() && $permission.isUserPermission() && $permission.getType() == $parampermissiontype && $permission.getUserName() == ($paramusername))
+				#set($tmp = "${tmp}<li>$space.getName() (individually)</li>")
+			#elseif ($space.isGlobal() && $permission.isGroupPermission() && $permission.getType() == $parampermissiontype)
+				#set ( $groupString = $permission.getGroup() )
+				#if ($userAccessor.hasMembership("$groupString", "$paramusername"))
+					#set($tmp = "${tmp}<li>$space.getName() ($groupString)</li>")
+				#end
+			#end
+		#else
+			#if ($permission.isUserPermission() && $permission.getType() == $parampermissiontype && $permission.getUserName() == ($paramusername))
+				#set($tmp = "${tmp}<li>$space.getName() (individually)</li>")
+			#elseif ($permission.isGroupPermission() && $permission.getType() == $parampermissiontype)
+				#set ( $groupString = $permission.getGroup() )
+				#if ($userAccessor.hasMembership("$groupString", "$paramusername"))
+					#set($tmp = "${tmp}<li>$space.getName() ($groupString)</li>")
+				#end
+			#end			
+		#end
+	#end
+#end
+   
+<ul>$tmp</ul> 
