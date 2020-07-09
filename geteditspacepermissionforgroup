@@ -1,0 +1,27 @@
+## Taken and adapted by: Funisher-code
+## Date created: 2020-05-22
+## @param Group:title=Group|type=string|required=true|desc=The group to check permissions
+
+All spaces where group "$paramGroup" has WRITE or READ of permission:
+
+#set($allSpaces=$spaceManager.getAllSpaces())
+  <br>WRITE:<ul>
+  #foreach($space in $allSpaces)
+    #set($spacePermissions=$space.getPermissions())
+    #foreach($permission in $spacePermissions)
+      #if ($permission.getType() == 'EDITSPACE' && $permission.getGroup() == $paramGroup)
+        <li><a href="$req.contextPath/spaces/spacepermissions.action?key=$space.key">$permission.getType() for $space.name ($space.key)</a></li>
+      #end
+	#end
+  #end
+  </ul>
+#set($allSpaces=$spaceManager.getAllSpaces())
+  READ:<ul>
+  #foreach($space in $allSpaces)
+	#foreach($permission in $spacePermissions)
+      #if ($permission.getType() == 'VIEWSPACE' && $permission.getGroup() == $paramGroup)
+        <li><a href="$req.contextPath/spaces/spacepermissions.action?key=$space.key">$permission.getType() for $space.name ($space.key)</a></li>
+      #end
+    #end
+  #end
+  </ul>
