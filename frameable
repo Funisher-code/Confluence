@@ -1,0 +1,10 @@
+## Developed by: Davin Studer
+## Date created: 04/02/2015
+## @noparams
+#if($req.getParameter('frameable') == "true")
+<style>
+#header, #footer, .ia-splitter .ia-splitter-left {display: none !important;}
+#main {margin-left: 0 !important; border: 0 !important;}
+body {background: #FFFFFF !important;}
+</style>
+#end
