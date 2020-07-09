@@ -1,0 +1,51 @@
+## Developed by: Funisher-code
+## Date created: 07.07.2019
+
+## @param page:title=Page|type=confluence-content|required=true|desc=Seite auswählen, die den Anhang beinhaltet
+## @param extension:title=Dateierweiterung|type=string|required=true|desc=Dateierweiterung des Anhangs (z.B. pdf oder xlsx)
+## @param caption:title=Link Text|type=string|required=true|desc=Text, der für den Link auf der Seite angezeigt werden soll
+
+#############################################################################
+## create strings for "space key" and "page name" from parameter page
+## source: https://community.atlassian.com/t5/Answers-Developer-Questions/Autocomplete-and-link-to-page-in-user-macro/qaq-p/522841
+#############################################################################
+#set ( $colonIndex = $parampage.indexOf(":") )
+#if ( $colonIndex == -1 )
+  #set ( $spaceKey = $space.key )
+  #set ( $pageName = $parampage )
+#else
+  #set ( $spaceKey = $parampage.substring(0, $colonIndex) )
+  #set ( $pageNameIndex = $colonIndex + 1 )
+  #set ( $pageName = $parampage.substring($pageNameIndex) )
+#end
+#set ( $page = $pageManager.getPage($spaceKey, $pageName) )
+
+#############################################################################
+## determine page id of that page because attachments are placed in a subfolder named after the id of the page
+#############################################################################
+#set($pageid=$pageManager.getPage($spaceKey, $pageName).getIdAsString())
+#set($linktoatt="https://cyberwiki.kapo.zh.ch/download/attachments/$pageid/$content.title.$paramextension")
+
+#############################################################################
+## check if page and attachment exists and create a link to the attachment if both positive
+#############################################################################
+#####set ( $fileExists = "//default value here//" )
+#####set ( $fileExists = $_.locateFile($linktoatt, $pageName))
+#####set ( $fileExists = ""+$_.locateFile("download/attachments/2752513/Uber.pdf").Class.Name )
+#set ( $fileExists = $_.locateFile($linktoatt))
+#set ( $currentFolder = $_.locateFolder($page.parentFolderIdentifier.path.pathAsString ))
+
+##Variable linktoatt: $linktoatt<br>
+##Variable fileExists: $fileExists<br>
+##Variable currentFolder: $currentFolder<br>
+##AUSGABE:
+
+#if($page)  ## only proceed if page exists, works fine
+ #if($fileExists) ## only proceed if attachment exists !!! NOT WORKING YET !!!!
+  <a href=$linktoatt> $paramcaption </a>
+ #else
+  Es existiert auf der Seite <i>$page</i> kein Anhang mit Dateinamen <i>$content.title.$paramextension</i>
+ #end
+#else
+  Seite $parampage existiert nicht
+#end
