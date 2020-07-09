@@ -1,0 +1,11 @@
+## Developed by: Funisher-code
+## Date created: 01.02.2019
+
+## @param space:title=Space|type=spacekey|required=true
+
+#set($page=$pageManager.getPage($paramspace,$content.title))
+#if($page)
+  $action.getHelper().renderConfluenceMacro("{include:$paramspace:$content.title}")
+#else
+  <h3>ACHTUNG: Es existiert im Space <i>$paramspace</i> keine Seite mit Titel <i>$content.title</i><br></h3>
+#end
