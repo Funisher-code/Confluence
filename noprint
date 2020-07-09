@@ -1,0 +1,4 @@
+## @noparams
+#if ($body)
+<div class="noprint">$body</div>
+#end
