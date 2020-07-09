@@ -1,0 +1,3 @@
+## @param space:title=Space|type=spacekey|desc=Erstelle den neuen Blog in diesem Space
+## @param name:title=Name|type=string|desc=Button Text
+<a href="/pages/createblogpost.action?spaceKey=$paramspace" class="aui-button"><span>$paramname</span></a>
